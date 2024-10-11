@@ -1,9 +1,4 @@
 ﻿using Entities.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Entities
 {
@@ -11,10 +6,10 @@ namespace Entities
     {
         public int Distance { get; set; }
 
-        public int StartSettlementId { get; set; }
+        public Guid StartSettlementId { get; set; }
         public Settlement StartSettlement { get; set; }
 
-        public int EndSettlementId { get; set; }
+        public Guid EndSettlementId { get; set; }
         public Settlement EndSettlement { get; set; }
     }
 }

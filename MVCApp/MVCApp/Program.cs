@@ -1,9 +1,19 @@
+using DbAccess.Context;
+using MVCApp.Extensions;
+using MVCApp.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.ConfigureContext(builder);
+
 var app = builder.Build();
+
+app.MigrateDatabase<LogisticContext>();
+
+app.UseMiddleware<DbSeederMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

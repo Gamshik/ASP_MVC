@@ -1,14 +1,13 @@
 ﻿using Entities.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Entities
 {
     public class Settlement : EntityBase
     {
         public string Title { get; set; }
+
+        public IEnumerable<Route>? RouteStartSettlements { get; set; }  
+
+        public IEnumerable<Route>? RouteEndSettlements { get; set; }
     }
 }
