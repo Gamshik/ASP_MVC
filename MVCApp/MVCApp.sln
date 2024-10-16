@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entiti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbAccess", "DbAccess\DbAccess.csproj", "{58EF3221-8DEC-4B51-81BD-A72FE3F177B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{2DE2D287-C262-41D1-B528-44B1D399035A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{58EF3221-8DEC-4B51-81BD-A72FE3F177B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58EF3221-8DEC-4B51-81BD-A72FE3F177B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58EF3221-8DEC-4B51-81BD-A72FE3F177B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DE2D287-C262-41D1-B528-44B1D399035A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DE2D287-C262-41D1-B528-44B1D399035A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DE2D287-C262-41D1-B528-44B1D399035A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DE2D287-C262-41D1-B528-44B1D399035A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

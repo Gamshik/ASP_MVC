@@ -9,6 +9,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.ConfigureContext(builder);
 
+builder.Services.ConfigureScopedDependencies();
+
 var app = builder.Build();
 
 app.MigrateDatabase<LogisticContext>();

@@ -6,7 +6,7 @@ namespace Entities
     {
         public string Title { get; set; }
 
-        public IEnumerable<Route>? RouteStartSettlements { get; set; }  
+        public IEnumerable<Route>? RouteStartSettlements { get; set; }
 
         public IEnumerable<Route>? RouteEndSettlements { get; set; }
     }

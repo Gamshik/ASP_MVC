@@ -17,57 +17,67 @@ namespace MVCApp.Middleware
         {
             if (!dbContext.Cargos.Any() || !dbContext.Settlements.Any() || !dbContext.Routes.Any())
             {
-                // Заполняем базу данных тестовыми данными с использованием цикла
-                var settlements = new List<Settlement>();
-                var random = new Random();
-
-                // Генерируем 10 населённых пунктов
-                for (int i = 1; i <= 10; i++)
+                try
                 {
-                    var settlement = new Settlement
+                    var quantityEntity = 50;
+                    var random = new Random();
+
+                    var newSettlements = new Settlement[quantityEntity];
+
+                    for (int i = 0; i < newSettlements.Length; i++)
+                        newSettlements[i] = new Settlement
+                        {
+                            Title = $"Settlement {i}"
+                        };
+
+                    await dbContext.Settlements.AddRangeAsync(newSettlements);
+
+                    dbContext.SaveChanges();
+
+                    var newRoutes = new Route[quantityEntity];
+
+                    for (int i = 0; i < newRoutes.Length; i++)
                     {
-                        Title = $"Settlement {i}"
-                    };
-                    settlements.Add(settlement);
-                    dbContext.Settlements.Add(settlement);
-                }
+                        var startSettlementIndex = random.Next(newSettlements.Length);
+                        var endSettlementIndex = Enumerable.Range(0, quantityEntity).Except([startSettlementIndex]).First();
 
-                // Сохраняем населённые пункты, чтобы потом использовать их для маршрутов
-                dbContext.SaveChanges();
+                        var startSettlement = newSettlements[startSettlementIndex];
+                        var endSettlement = newSettlements[endSettlementIndex];
 
-                // Генерируем 10 маршрутов, используя случайные населённые пункты
-                for (int i = 0; i < 10; i++)
-                {
-                    var startSettlement = settlements[random.Next(settlements.Count)];
-                    var endSettlement = settlements[random.Next(settlements.Count)];
-
-                    // Проверяем, чтобы стартовый и конечный пункт были разными
-                    if (startSettlement != endSettlement)
-                    {
-                        var route = new Route
+                        var newRoute = new Route
                         {
                             Distance = random.Next(100, 1000),
                             StartSettlement = startSettlement,
                             EndSettlement = endSettlement
                         };
-                        dbContext.Routes.Add(route);
+
+                        newRoutes[i] = newRoute;
                     }
-                }
 
-                // Генерируем 10 грузов с разными параметрами
-                for (int i = 1; i <= 10; i++)
-                {
-                    var cargo = new Cargo
+                    await dbContext.Routes.AddRangeAsync(newRoutes);
+
+                    var newCargos = new Cargo[quantityEntity];
+
+                    for (int i = 0; i < newCargos.Length; i++)
                     {
-                        Title = $"Cargo {i}",
-                        Weight = random.Next(500, 2000),
-                        RegistrationNumber = $"REG-{random.Next(1000, 9999)}"
-                    };
-                    dbContext.Cargos.Add(cargo);
-                }
+                        var newCargo = new Cargo
+                        {
+                            Title = $"Cargo {i}",
+                            Weight = random.Next(500, 2000),
+                            RegistrationNumber = $"REG-{random.Next(1000, 9999)}"
+                        };
 
-                // Сохраняем изменения в базе данных
-                dbContext.SaveChanges();
+                        newCargos[i] = newCargo;
+                    }
+
+                    await dbContext.Cargos.AddRangeAsync(newCargos);
+
+                    dbContext.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
             }
 
             await _next(context);

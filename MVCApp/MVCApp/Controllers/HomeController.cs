@@ -1,16 +1,19 @@
-using System.Diagnostics;
+using Contracts.Repositoriesz;
 using Microsoft.AspNetCore.Mvc;
 using MVCApp.Models;
+using System.Diagnostics;
 
 namespace MVCApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ICargoRepository _cargoRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICargoRepository cargoRepository)
         {
             _logger = logger;
+            _cargoRepository = cargoRepository;
         }
 
         public IActionResult Index()
