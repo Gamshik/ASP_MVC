@@ -21,14 +21,14 @@ namespace BusinessLogic.Base
         {
             var entities = _repository
                 .GetAll()
-                .Skip((parameters.Page - 1) * parameters.PageSize)
-                .Take(parameters.PageSize);
+                .Skip((parameters.page - 1) * parameters.pageSize)
+                .Take(parameters.pageSize);
 
             var count = _repository.Count();
 
             var entitiesDtos = _mapperService.Map<IEnumerable<TDb>, IEnumerable<TDto>>(entities);
 
-            return new PagedList<TDto>(entitiesDtos.ToList(), count, parameters.Page, parameters.PageSize);
+            return new PagedList<TDto>(entitiesDtos.ToList(), count, parameters.page, parameters.pageSize);
         }
     }
 }

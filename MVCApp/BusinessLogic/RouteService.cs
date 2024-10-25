@@ -18,14 +18,14 @@ namespace BusinessLogic
         {
             var routes = _repository
                 .GetAllWithDependencies()
-                .Skip((parameters.Page - 1) * parameters.PageSize)
-                .Take(parameters.PageSize);
+                .Skip((parameters.page - 1) * parameters.pageSize)
+                .Take(parameters.pageSize);
 
             var count = _repository.Count();
 
             var routeDtos = _mapperService.Map<IEnumerable<Route>, IEnumerable<RouteDto>>(routes);
 
-            return new PagedList<RouteDto>(routeDtos.ToList(), count, parameters.Page, parameters.PageSize);
+            return new PagedList<RouteDto>(routeDtos.ToList(), count, parameters.page, parameters.pageSize);
         }
     }
 }
