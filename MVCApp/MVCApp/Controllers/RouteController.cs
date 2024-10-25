@@ -1,31 +1,37 @@
-﻿using Contracts.Repositories;
-using Contracts.Repositoriesz;
-using Microsoft.AspNetCore.Http;
+﻿using Contracts.Services;
+using Entities.Pagination;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
 
 namespace MVCApp.Controllers
 {
-    [Route("routes")]
+    [Route("route")]
+    [ApiController]
     public class RouteController : Controller
     {
-        private readonly IRouteRepository _routeRepository;
+        private readonly IRouteService _routeService;
 
-        public RouteController(IRouteRepository routeRepository)
+        public RouteController(IRouteService routeService)
         {
-            _routeRepository = routeRepository;
+            _routeService = routeService;
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
+        [HttpGet("", Name = "routes")]
+        [ResponseCache(CacheProfileName = "EntityCache")]
+        public IActionResult Index([FromQuery] PaginationQueryParameters parameters)
         {
-            var test = _routeRepository.GetAll();
-            var allRoutes = new StringBuilder("");
-            foreach (var item in test)
-            {
-                allRoutes.Append($"Is {item.Id} start: {item.StartSettlementId} end: {item.EndSettlementId}\n");
-            }
-            return Ok(allRoutes.ToString());
+            var routes = _routeService.GetByPage(parameters);
+
+            if (routes == null || !routes.Any())
+                return NoContent();
+
+            ViewBag.CurrentPage = routes.MetaData.CurrentPage;
+            ViewBag.PageSize = routes.MetaData.PageSize;
+            ViewBag.TotalSize = routes.MetaData.TotalSize;
+
+            ViewBag.HaveNext = routes.MetaData.HaveNext;
+            ViewBag.HavePrev = routes.MetaData.HavePrev;
+
+            return View(routes);
         }
     }
 }

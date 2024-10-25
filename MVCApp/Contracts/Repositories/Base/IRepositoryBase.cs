@@ -7,5 +7,7 @@ namespace Contracts.Repositories.Base
     {
         IQueryable<T> GetAll();
         IQueryable<T> FindByCondition(Expression<Func<T, bool>> condition);
+        IQueryable<T> GetAllWithDependencies();
+        int Count();
     }
 }

@@ -1,30 +1,37 @@
-﻿using Contracts.Repositories;
-using Microsoft.AspNetCore.Http;
+﻿using Contracts.Services;
+using Entities.Pagination;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
 
 namespace MVCApp.Controllers
 {
     [Route("settlements")]
+    [ApiController]
     public class SettlementController : Controller
     {
-        private readonly ISettlementRepository _settlementRepository;
+        private readonly ISettlementService _settlementService;
 
-        public SettlementController(ISettlementRepository settlementRepository)
+        public SettlementController(ISettlementService settlementService)
         {
-            _settlementRepository = settlementRepository;
+            _settlementService = settlementService;
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
+        [HttpGet("", Name = "settlements")]
+        [ResponseCache(CacheProfileName = "EntityCache")]
+        public IActionResult Index([FromQuery] PaginationQueryParameters parameters)
         {
-            var test = _settlementRepository.GetAll();
-            var allSettlements = new StringBuilder("");
-            foreach (var item in test)
-            {
-                allSettlements.Append($"Is {item.Id} title: {item.Title}\n");
-            }
-            return Ok(allSettlements.ToString());
+            var settlements = _settlementService.GetByPage(parameters);
+
+            if (settlements == null || !settlements.Any())
+                return NoContent();
+
+            ViewBag.CurrentPage = settlements.MetaData.CurrentPage;
+            ViewBag.PageSize = settlements.MetaData.PageSize;
+            ViewBag.TotalSize = settlements.MetaData.TotalSize;
+
+            ViewBag.HaveNext = settlements.MetaData.HaveNext;
+            ViewBag.HavePrev = settlements.MetaData.HavePrev;
+
+            return View(settlements);
         }
     }
 }

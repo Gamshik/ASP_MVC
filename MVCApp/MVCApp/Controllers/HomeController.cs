@@ -1,10 +1,12 @@
-using Contracts.Repositoriesz;
+using Contracts.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using MVCApp.Models;
 using System.Diagnostics;
 
 namespace MVCApp.Controllers
 {
+    [Route("")]
+    [ApiController]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -20,12 +22,7 @@ namespace MVCApp.Controllers
         {
             return View();
         }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
+        [HttpGet("error")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

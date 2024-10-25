@@ -1,32 +1,38 @@
-﻿using Contracts.Repositoriesz;
-using Microsoft.AspNetCore.Http;
+﻿using Contracts.Services;
+using Entities;
+using Entities.Pagination;
 using Microsoft.AspNetCore.Mvc;
-using MVCApp.Models;
-using System.Diagnostics;
-using System.Text;
 
 namespace MVCApp.Controllers
 {
-    [Route("cargos")]
+    [Route("cargo")]
+    [ApiController]
     public class CargoController : Controller
     {
-        private readonly ICargoRepository _cargoRepository;
+        private readonly ICargoService _cargoService;
 
-        public CargoController(ICargoRepository cargoRepository)
+        public CargoController(ICargoService cargoService)
         {
-            _cargoRepository = cargoRepository;
+            _cargoService = cargoService;
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
+        [HttpGet("", Name = "cargos")]
+        [ResponseCache(CacheProfileName = "EntityCache")]
+        public IActionResult Index([FromQuery] PaginationQueryParameters parameters)
         {
-            var test = _cargoRepository.GetAll();
-            var allCargos = new StringBuilder("");
-            foreach (var item in test)
-            {
-                allCargos.Append($"Weight {item.Weight} Id: {item.Id} REG: {item.RegistrationNumber}\n");
-            }
-            return Ok(allCargos.ToString());
+            var cargos = _cargoService.GetByPage(parameters);
+
+            if (cargos == null || !cargos.Any())
+                return NoContent();
+
+            ViewBag.CurrentPage = cargos.MetaData.CurrentPage;
+            ViewBag.PageSize = cargos.MetaData.PageSize;
+            ViewBag.TotalSize = cargos.MetaData.TotalSize;
+
+            ViewBag.HaveNext = cargos.MetaData.HaveNext;
+            ViewBag.HavePrev = cargos.MetaData.HavePrev;
+
+            return View(cargos);
         }
     }
 }

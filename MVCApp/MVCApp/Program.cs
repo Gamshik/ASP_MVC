@@ -10,6 +10,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.ConfigureContext(builder);
 
 builder.Services.ConfigureScopedDependencies();
+builder.Services.ConfigureMapper();
+
+builder.Services.ConfigureCacheProfiles();
 
 var app = builder.Build();
 
@@ -33,7 +36,8 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    name: "Default",
+    pattern: "/",
+    defaults: new { controller = "Home", action = "Index" });
 
 app.Run();
