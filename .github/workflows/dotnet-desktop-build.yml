@@ -20,13 +20,13 @@ jobs:
       - name: Build for win-x64
         shell: bash 
         run: |
-              cd ./db_app
+              cd ./MVCApp
               dotnet publish -c Release -r win-x64 --self-contained
 
       - name: Build for linux-x64
         shell: bash 
         run: |
-              cd ./db_app
+              cd ./MVCApp
               dotnet publish -c Release -r linux-x64 --self-contained
             
       - name: Git push
